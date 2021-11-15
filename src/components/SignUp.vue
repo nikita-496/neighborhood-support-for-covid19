@@ -8,16 +8,17 @@
                 <v-form>
                   <label class="text-body-1" for="your_name">Имя</label>
                   <v-text-field v-model="name" placeholder="введите Ваше имя" name="your_name" solo clearable></v-text-field>
-                  <label class="text-body-1" for="adress">Адресс</label>
-                  <v-text-field  v-model="adress" placeholder="введите Ваше адресс" name="adress" solo clearable></v-text-field>
+                  <label class="text-body-1" for="address">Адресс</label>
+                  <v-text-field  v-model="address" placeholder="введите Ваше адресс" name="address" solo clearable></v-text-field>
                   <label class="text-body-1" for="phone">Телефон</label>
                   <v-text-field v-model="phone" placeholder="введите Ваше номер телефона" name="phone" solo clearable></v-text-field>
                   <slot name="neighbors"></slot>
 									<slot name="volunteers"></slot>
                   <v-card-actions class="text--secondary">
                     <v-spacer></v-spacer>
-										<slot name="btn-submit"></slot>
-										<!--<v-btn :@click=" ? 'neighborsSubmit' : 'volunteersSubmit'" depressed color="primary">Зарегестрироваться</v-btn>-->
+										<slot name="neighbors-submit" :neighborsSubmit="neighborsSubmit"></slot>
+											<slot name="volunteers-submit" :volunteersSubmit="volunteersSubmit"></slot>
+										<!--<v-btn @click="neighborsSubmit" depressed color="primary">Зарегестрироваться</v-btn>-->
                     <!-- <router-link :to="{ name: 'SignUp' }">Sign Up</router-link> -->
                     Already have an account? <a href="#" class="pl-2" style="color: #000000">Sign In</a>
                   </v-card-actions>
@@ -50,19 +51,18 @@ export default{
   },
 	data: () => ({
 		name: "",
-    adress: "",
+    address: "",
     phone: "",
 	}),
 	 methods:{
     neighborsSubmit() {
-			alert(123)
       const base = new Airtable({apiKey: 'keyvduBWr1shfzZQs'}).base('appJzrXahAuT6QocL')
       const createUser = async () => {
         await base ("Neighbors").create([
           {
             "fields": {
               "Name": this.name,
-              "Adress": this.adress,
+              "Address": this.address,
               "Phone": this.phone,
               "Request type": this.typeOfRequest,
               "Summary request": this.targetOfRequest,
@@ -86,7 +86,7 @@ export default{
 		volunteersSubmit() {
       const base = new Airtable({apiKey: 'keyvduBWr1shfzZQs'}).base('appJzrXahAuT6QocL')
       const createUser = async () => {
-        await base ("Neighbors").create([
+        await base ("Volunteers").create([
           {
             "fields": {
               "Name": this.name,
@@ -94,9 +94,9 @@ export default{
 							"Secondary Skills": "",
 							"Skills More": this.moreInformation,
 							"Equipment": this.resources,
-							"Share Information": "",
+							"Share Information": null,
 							"Prefered Contact Method": this.prefered,
-							"Adress": this.adress,
+							"Address": this.address,
               "Phone": this.phone,
 							"Email": this.email,
 							"Request Logging Link": "",

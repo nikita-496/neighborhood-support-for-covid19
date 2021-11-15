@@ -10,7 +10,8 @@
       <v-textarea v-model="detailsOfRequest" name="details" filled auto-grow value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through.">
       </v-textarea>
     </template>
-    <v-btn slot="btn-submit" depressed color="primary">Зарегестрироваться</v-btn>
+    <v-btn slot="neighbors-submit" slot-scope="{neighborsSubmit}"
+     @click="neighborsSubmit" color="primary">Зарегестрироваться</v-btn>
     </sign-up>
 </template>
 

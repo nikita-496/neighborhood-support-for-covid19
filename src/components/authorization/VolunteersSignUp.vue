@@ -19,7 +19,8 @@
 		 <v-checkbox v-model="prefered" name="prefered" color="red" value="Instagram" label="Instagram" hide-details></v-checkbox>
 		 <v-checkbox v-model="prefered" name="prefered" color="red" value="Другой" label="Другой" hide-details></v-checkbox>
   </template>
-	<v-btn depressed color="primary">Зарегестрироваться</v-btn>
+	 <v-btn slot="volunteers-submit" slot-scope="{volunteersSubmit}"
+     @click="volunteersSubmit" color="primary">Зарегестрироваться</v-btn>
  </sign-up>
 </template>
 
