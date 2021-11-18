@@ -54,18 +54,9 @@
 </template>
 
 <script>
-  import API_TOKEN from "../config/api-token"
-	const url = "https://api.airtable.com/v0/"
-	const airTableBase = "appJzrXahAuT6QocL/" 
-  const config = {
-		headers: {
-			Authorization: "Bearer " + API_TOKEN,
-		}
-	}
-	const setBaseUrl = (currentTable) => `${url}${airTableBase}${currentTable}`
+  import {postUser} from "../services/http"
 
-
-  export default{
+  export default {
     name: "sign-up",
     props: {
       typeOfRequest: {type: String},
@@ -94,82 +85,40 @@
             return n === 1 ? "Имя" : n === 2 ?  "Адресс" :"Телефон"
          }
       },
-      async neighborsSubmit() {
-        //Setting parameters for fetch
-        const neighborsData = {
-          "fields": {
-              "Name": this.name,
-              "Address": this.address,
-              "Phone": this.phone,
-              "Request type": this.typeOfRequest,
-              "Summary request": this.targetOfRequest,
-              "Details request": this.detailsOfRequest,
-              "Symptom": "",
-              "Temperature": null
-          }
-        }
-        const options = {
-          method: "POST", 
-          body: JSON.stringify(neighborsData),
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + API_TOKEN
-          }
-        }
+       neighborsSubmit() {
+          const neighborsData = {
+            "fields": {
+            "Name": this.name,
+            "Address": this.address,
+            "Phone": this.phone,
+            "Request type": this.typeOfRequest,
+            "Summary request": this.targetOfRequest,
+            "Details request": this.detailsOfRequest,
+            "Symptom": "",
+            "Temperature": null
+            }
+          };
+          postUser("Neighbors", neighborsData);
+        },
 
-        await fetch(setBaseUrl("Neighbors"), options)
-          .then(res => res.json())
-      },
-
-      async volunteersSubmit() {
-        const searchIdBySelectedOptions = async (table, type) => {
-          let id = ""
-          await fetch(setBaseUrl(table), config)
-            .then(res => res.json())
-            .then(res => {
-              if (table === "Skills") {
-                let selectedSkills = res.records.filter(record => {
-                     return type === "primary" ? record.fields.Profession === this.primarySkill
-                     : record.fields.Profession === this.secondarySkills
-                })
-                id = selectedSkills.map(skill => skill.id)
-              }else if (table === "Equipment") {
-                let selectedEquipments = res.records.filter(record => record.fields.Name === this.equipments)
-                id = selectedEquipments.map(equipment => equipment.id)
-              }
-              return id
-            }).catch(err => console.error("Error:", err)) 
-            return id
-        }
-  
-        //Setting parameters for fetch
+       volunteersSubmit() {
         const volunteersData = {
-          "fields": {
+          fields: {
             "Address": this.address,
             "Skills More": this.skillsMore,
             "Phone": this.phone,
             "Email": this.email,
             "Share Information": [],
-            "Secondary Skills": await searchIdBySelectedOptions("Skills", "secondary"),
-            "Primary Skill": await searchIdBySelectedOptions("Skills", "primary"),
-            "Equipment": await searchIdBySelectedOptions("Equipment"),
+            "Secondary Skills": this.secondarySkills,
+            "Primary Skill": this.primarySkill,
+            "Equipment": this.equipments,
             "Name": this.name,
             "Google Cache": ""
           }
-        }
-        const options = {
-          method: "POST", 
-          body: JSON.stringify(volunteersData),
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + API_TOKEN
-          }
-        }
-
-        await fetch(setBaseUrl("Volunteers"), options)
-          .then(res => res.json())
+      };
+      postUser("Volunteers", volunteersData,);
     }
   }
-  }
+}
 </script>
 
