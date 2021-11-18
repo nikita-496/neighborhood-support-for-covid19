@@ -11,17 +11,17 @@ const routes = [
     component: () => import("../views/landing/index"),
   },
   {
-    path: '/signup',
+    path: '/sign/up',
     name: 'select-status',
     component: () => import("../components/authorization/SelectStatus")
   },
   {
-    path: '/neighbors-signup',
+    path: '/sign/up/neighbors',
     name: 'neighbors-sign-up',
     component: () => import("../components/authorization/NeighborsSignUp")
   },
   {
-    path: '/volunteers-signup/',
+    path: '/sign/up/volunteers',
     name: 'volunteers-sign-up',
     component: () => import("../components/authorization/VolunteersSignUp")
   }

@@ -10,7 +10,7 @@
 
       <v-toolbar-title>Система поддержки населения при COVID-19</v-toolbar-title>
       <v-spacer></v-spacer>
-      <a class="pr-15" href="/signup/">Войти</a>
+      <a class="pr-15" href="/sign/up">Войти</a>
       <a>Присоедениться</a>
     </v-app-bar>
 

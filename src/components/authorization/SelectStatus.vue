@@ -5,8 +5,8 @@
     	<h4 class="text-center">Кем вы являетесь?</h4>
   	</v-card-text>
 		<v-card-actions class="d-flex justify-space-around">
-			<v-btn to="/neighbors-signup/">Изолированный</v-btn>
-			<v-btn to="/volunteers-signup/">Волонтер</v-btn>
+			<v-btn to="/sign/up/neighbors">Изолированный</v-btn>
+			<v-btn to="/sign/up/volunteers">Волонтер</v-btn>
 		</v-card-actions>
  	</v-card>
 </v-flex>
