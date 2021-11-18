@@ -10,43 +10,29 @@ const setFetchOptionHeader = () => ({
 
 const getUrl = (currentTable) => `${baseUrl}${airTableBase}${currentTable}`;
 
-export const postUser = async (table, dataToFetch) => {
-	if(table === "Volunteers") {
-		dataToFetch.fields["Primary Skill"] = await serachSelectedOptionsId("Skills", dataToFetch, "Primary Skill")
-		dataToFetch.fields["Secondary Skills"] = await serachSelectedOptionsId("Skills", dataToFetch, "Secondary Skills")
-		dataToFetch.fields.Equipment = await serachSelectedOptionsId("Equipment", dataToFetch)
-	};
+const api = {
+	sign: {
+		upVolunteers: getUrl("Volunteers"),
+		upNeighbors: getUrl("Neighbors"),
+	},
+	skills: getUrl("Skills"),
+	equipment: getUrl("Equipment"),
+};
 
-	await fetch(getUrl(table), {
-		method: "POST",
+export {api as API};
+
+// Get all records from request
+export const getAllJson =  async (url) => {
+ return await fetch(url, {
 		headers: setFetchOptionHeader(),
-		body: JSON.stringify(dataToFetch)
 	})
-		.then(res => res.json())
-};
-
-// Setting data for table "Volunteers" in terms of related table fields
-const serachSelectedOptionsId = async (table, data, type) => {
-
-	const searchId = (options, type) => {
-		let selectedOptions = options.filter(option => {
-			return type === "primary" ? option.fields.Profession === data.fields["Primary Skill"] 
-			: type === "secondary" ? option.fields.Profession === data.fields["Secondary Skills"]
-			: option.fields.Name === data.fields.Equipment
-		});
-		return  selectedOptions.map(option => option.id);
-	};
-
-	let id = "";
-	await fetch(getUrl(table), {
-		headers: setFetchOptionHeader()
+}
+export const postJson = async (url, data) => {
+	await fetch(url, {
+		method: "POST", 
+		headers: setFetchOptionHeader(),
+		body: JSON.stringify(data)
 	})
-		.then(res => res.json())
-		.then(result => {
-			return table === "Skills" && type === "Primary Skill" ? id = searchId(result.records, "primary") 
-			: table === "Skills" && type === "Secondary Skills" ? id = searchId(result.records, "secondary") 
-			: id = searchId(result.records)
-		});
-		return id;
-};
+}
+
 

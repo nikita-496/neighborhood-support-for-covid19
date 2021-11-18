@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import {postUser} from "../services/http"
+  import signService from "../services/SignService"
 
   export default {
     name: "sign-up",
@@ -62,12 +62,14 @@
       typeOfRequest: {type: String},
       targetOfRequest: {type: String},
       detailsOfRequest: {type: String},
+      temperature: {type: Number},
+      symptoms: {type: String},
       email: {type: String},
       skillsMore: {type: String},
       primarySkill: {type: String},
       secondarySkills: {type: String},
       equipments: {type: String},
-      prefered: {type: String}
+      prefered: {type: String},
     },
     data: () => ({
       name: "",
@@ -94,11 +96,11 @@
             "Request type": this.typeOfRequest,
             "Summary request": this.targetOfRequest,
             "Details request": this.detailsOfRequest,
-            "Symptom": "",
-            "Temperature": null
+            "Symptom": this.symptoms,
+            "Temperature": this.temperature
             }
           };
-          postUser("Neighbors", neighborsData);
+          signService.signUp("Neighbors", neighborsData)
         },
 
        volunteersSubmit() {
@@ -116,7 +118,7 @@
             "Google Cache": ""
           }
       };
-      postUser("Volunteers", volunteersData,);
+      signService.signUp("Volunteers", volunteersData)
     }
   }
 }

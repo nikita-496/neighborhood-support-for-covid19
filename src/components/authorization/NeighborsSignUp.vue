@@ -3,7 +3,7 @@
         :typeOfRequest="userData.typeOfRequest" 
         :targetOfRequest="userData.targetOfRequest" 
         :detailsOfRequest="userData.detailsOfRequest"
-        :temperature="userData.temperature"
+        :temperature="Number(userData.temperature)"
         :symptoms="userData.symptoms">
       <div v-for="n in 5" :key="n+3" slot="neighbors">
       <label class="text-body-1" for="type">{{`${setValue(n)}`}}</label>
