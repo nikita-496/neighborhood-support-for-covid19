@@ -17,6 +17,8 @@ const api = {
 	},
 	skills: getUrl("Skills"),
 	equipment: getUrl("Equipment"),
+	contacts: getUrl("Contacts"),
+	"event logging": getUrl("Event Logging")
 };
 
 export {api as API};

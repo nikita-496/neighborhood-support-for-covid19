@@ -59,17 +59,8 @@
   export default {
     name: "sign-up",
     props: {
-      typeOfRequest: {type: String},
-      targetOfRequest: {type: String},
-      detailsOfRequest: {type: String},
-      temperature: {type: Number},
-      symptoms: {type: String},
-      email: {type: String},
-      skillsMore: {type: String},
-      primarySkill: {type: String},
-      secondarySkills: {type: String},
-      equipments: {type: String},
-      prefered: {type: String},
+      neigborsData: {type: Object},
+      volunteersData: {type: Object}
     },
     data: () => ({
       name: "",
@@ -93,34 +84,36 @@
             "Name": this.name,
             "Address": this.address,
             "Phone": this.phone,
-            "Request type": this.typeOfRequest,
-            "Summary request": this.targetOfRequest,
-            "Details request": this.detailsOfRequest,
-            "Symptom": this.symptoms,
-            "Temperature": this.temperature
+            "Request type": this.neigborsData.typeOfRequest,
+            "Summary request": this.neigborsData.targetOfRequest,
+            "Details request": this.neigborsData.detailsOfRequest,
+            "Symptom": this.neigborsData.symptoms,
+            "Temperature": this.neigborsData.temperature
             }
           };
-          signService.signUp("Neighbors", neighborsData)
+          signService.signUp("Neighbors", neighborsData);
         },
 
        volunteersSubmit() {
         const volunteersData = {
           fields: {
             "Address": this.address,
-            "Skills More": this.skillsMore,
+            "Skills More": this.volunteersData.skillsMore,
             "Phone": this.phone,
-            "Email": this.email,
+            "Email": this.volunteersData.email,
             "Share Information": [],
-            "Secondary Skills": this.secondarySkills,
-            "Primary Skill": this.primarySkill,
-            "Equipment": this.equipments,
+            "Prefered Contact Method": this.volunteersData.prefered,
+            "Secondary Skills": this.volunteersData.secondarySkills,
+            "Primary Skill": this.volunteersData.primarySkill,
+            "Equipment": this.volunteersData.equipment,
             "Name": this.name,
             "Google Cache": ""
           }
       };
-      signService.signUp("Volunteers", volunteersData)
+      signService.signUp("Volunteers", volunteersData);
     }
   }
 }
 </script>
+
 

@@ -3,6 +3,7 @@ import { API, postJson, getAllJson } from "./http";
 class SignService {
 
  async signUp(table, data) {
+   
   if (table === "Volunteers") {
    data.fields["Primary Skill"] = await this.handlingData("Skills", data, "Primary Skill");
    data.fields["Secondary Skills"] = await this.handlingData("Skills", data, "Secondary Skills");
@@ -14,22 +15,18 @@ class SignService {
 
  // Setting data for table "Volunteers" in terms of related table fields in base
  async handlingData(table, data, type) {
-  let id = "";
     if (table === "Skills") {
-      await getAllJson(API.skills) 
+      return getAllJson(API.skills) 
        .then(res => res.json())
        .then( async result => {
-        return table === "Skills" && type === "Primary Skill" ? id = await this.searchId(result.records, data, type) 
-        : id = await this.searchId(result.records, data, type) 
+        return table === "Skills" && type === "Primary Skill" ? await this.searchId(result.records, data, type) 
+        : await this.searchId(result.records, data, type) 
       }
     )}else {
-      await getAllJson(API.equipment)
+      return getAllJson(API.equipment)
        .then(res => res.json())
-       .then( async result => {
-        return id = await this.searchId(result.records, data, type)
-       })
-    }
-  return id; 
+       .then(async result => await this.searchId(result.records, data, type))
+    };
  }; 
 
  searchId(options, data, type) {

@@ -1,16 +1,11 @@
 <template>
-    <sign-up 
-        :typeOfRequest="userData.typeOfRequest" 
-        :targetOfRequest="userData.targetOfRequest" 
-        :detailsOfRequest="userData.detailsOfRequest"
-        :temperature="Number(userData.temperature)"
-        :symptoms="userData.symptoms">
+    <sign-up :neigborsData="userData">
       <div v-for="n in 5" :key="n+3" slot="neighbors">
       <label class="text-body-1" for="type">{{`${setValue(n)}`}}</label>
-      <v-select v-if="n === 1" v-model="userData.typeOfRequest" name="type" :items="options" dense solo></v-select>
+      <v-select v-if="n === 1" v-model="userData.typeOfRequest" name="type" :items="options['event logging']" dense solo></v-select>
       <v-textarea v-else-if="n === 2" v-model="userData.targetOfRequest" name="target" filled auto-grow/>
       <v-textarea v-else-if="n === 3" v-model="userData.detailsOfRequest" name="details" filled auto-grow/>
-      <v-textarea v-else-if="n === 4" v-model="userData.temperature" name="temperature" height="50" filled auto-grow/>
+      <v-textarea v-else-if="n === 4" v-model.number="userData.temperature" name="temperature" height="50" filled auto-grow/>
       <v-textarea v-else-if="n === 5" v-model="userData.symptoms" name="symptoms" filled auto-grow />
     </div>
     <v-btn slot="neighbors-submit" slot-scope="{neighborsSubmit}"
@@ -19,17 +14,8 @@
 </template>
 
 <script>
+  import selectListService from "../../services/SelectListService"
   import SignUp from "../SignUp.vue"
-  
-  import API_TOKEN from "../../config/api-token"
-  const url = "https://api.airtable.com/v0/"
-	const airTableBase = "appJzrXahAuT6QocL/" 
-
-	const config = {
-    headers: {
-      Authorization: "Bearer " + API_TOKEN,
-    }
-	}
 
   export default ({
     name: "neighbors-sign-up",
@@ -42,7 +28,9 @@
         temperature: null,
         symptoms: "",
       },
-      options: []
+      options: {
+        "event logging" : []
+      }
     }),
     methods: {
        setValue(n, attr){
@@ -57,15 +45,15 @@
       },
     },
     mounted() {
-	  const setBaseUrl = (currentTable) => `${url}${airTableBase}${currentTable}`
 
-    const setTypeOfRequestOptions = async () => {
-      await fetch(setBaseUrl("Event Logging"), config) 
-        .then(res => res.json())
-        .then(res => this.options = res.records.map(record => record.fields["Request Type"]))
-        .catch(err => console.error("Error:", err)) 
-    }
-    setTypeOfRequestOptions()
-    }
+      function setOptions (options) {
+				// parsed from Observer
+				let parsedOptions = JSON.parse(JSON.stringify(options));
+				selectListService.getOptions(Object.keys(parsedOptions).join(""))
+					.then(result => options["event logging"] = result);
+			};
+			setOptions(this.options);
+		}
+	
   })
 </script>
