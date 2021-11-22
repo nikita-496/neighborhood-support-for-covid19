@@ -1,73 +1,69 @@
 <template>
-  <v-main>
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center" dense>
-        <v-col cols="12" sm="8" md="4" lg="4">
-          <v-card elevation="0">
-            <v-card-text>
-              <v-form>
-                <div v-for="n in 3" :key="n">
-                  <label class="text-body-1" :for="setValue(n, 'for')">
-                    {{ setValue(n) }}
-                  </label>
-                  <v-text-field
-                    v-if="n === 1"
-                    v-model="name"
-                    :label="setValue(n, 'label')"
-                    :name="setValue(n, 'for')"
-                    solo
-                    clearable
-                  >
-                  </v-text-field>
-                  <v-text-field
-                    v-if="n === 2"
-                    v-model="address"
-                    :label="setValue(n, 'label')"
-                    :name="setValue(n, 'for')"
-                    solo
-                    clearable
-                  >
-                  </v-text-field>
-                  <v-text-field
-                    v-if="n === 3"
-                    v-model="phone"
-                    :label="setValue(n, 'label')"
-                    :name="setValue(n, 'for')"
-                    solo
-                    clearable
-                  >
-                  </v-text-field>
-                </div>
-                <slot name="neighbors"></slot>
-                <slot name="volunteers"></slot>
-                <v-card-actions class="text--secondary">
-                  <v-spacer></v-spacer>
-                  <slot name="neighbors-submit" :neighborsSubmit="neighborsSubmit"></slot>
-                  <slot name="volunteers-submit" :volunteersSubmit="volunteersSubmit"></slot>
-                  Already have an account?
-                  <a href="#" class="pl-2" style="color: #000000">Sign In</a>
-                </v-card-actions>
-              </v-form>
-            </v-card-text>
-            <v-card-actions class="ml-6 mr-6 text-center">
-              <p>
-                By continuing, you agree to Fedorae Education's
-                <a href="#" class="pl-2" style="color: #000000">Policy</a> and
-                <a href="#" class="pl-2" style="color: #000000">Terms of Use</a>
-              </p>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-main>
+  <auth-field>
+    <h3 slot="title">Регистрация</h3>
+    <template slot="fields">
+      <div v-for="n in 4" :key="n">
+        <label class="text-body-1" :for="setValue(n, 'for')">
+          {{ setValue(n) }}
+        </label>
+        <v-text-field
+          v-if="n === 1"
+          v-model="name"
+          :label="setValue(n, 'label')"
+          :name="setValue(n, 'for')"
+          solo
+          clearable
+        >
+        </v-text-field>
+        <v-text-field
+          v-if="n === 2"
+          v-model="address"
+          :label="setValue(n, 'label')"
+          :name="setValue(n, 'for')"
+          solo
+          clearable
+        >
+        </v-text-field>
+        <v-text-field
+          v-if="n === 3"
+          v-model="phone"
+          :label="setValue(n, 'label')"
+          :name="setValue(n, 'for')"
+          solo
+          clearable
+        >
+        </v-text-field>
+        <v-text-field
+          v-if="n === 4"
+          v-model="password"
+          :label="setValue(n, 'label')"
+          :name="setValue(n, 'for')"
+          solo
+          clearable
+        >
+        </v-text-field>
+      </div>
+      <slot name="neighbors"></slot>
+      <slot name="volunteers"></slot>
+    </template>
+    <template slot="actions">
+      <v-btn>Зарегистрироваться</v-btn>
+      <p>
+        By continuing, you agree to Fedorae Education's
+        <a href="#" class="pl-2" style="color: #000000">Policy</a> and
+        <a href="#" class="pl-2" style="color: #000000">Terms of Use</a>
+      </p>
+    </template>
+  </auth-field>
 </template>
 
 <script>
   import signService from "../services/SignService";
+  import AuthField from "./input/AuthField.vue";
 
   export default {
     name: "sign-up",
+    components: { AuthField },
     props: {
       neigborsData: { type: Object },
       volunteersData: { type: Object },
@@ -76,6 +72,7 @@
       name: "",
       address: "",
       phone: "",
+      password: "",
     }),
     methods: {
       setValue(n, attr) {
@@ -84,12 +81,14 @@
             return n === 1 ? "your_name" : n === 2 ? "address" : "phone";
           case "label":
             return n === 1
-              ? "введите Ваше имя"
+              ? "введите имя"
               : n === 2
-              ? "введите Ваш адресс"
-              : "введите Ваш номер телефона";
+              ? "введите адресс"
+              : n === 3
+              ? "введите номер телефона"
+              : "введите пароль";
           default:
-            return n === 1 ? "Имя" : n === 2 ? "Адресс" : "Телефон";
+            return n === 1 ? "Имя" : n === 2 ? "Адресс" : n === 3 ? "Телефон" : "Пароль";
         }
       },
 
@@ -104,6 +103,7 @@
             "Details request": this.neigborsData.detailsOfRequest,
             Symptom: this.neigborsData.symptoms,
             Temperature: this.neigborsData.temperature,
+            Password: this.password,
           },
         };
         signService.signUp("Neighbors", neighborsData);
@@ -125,13 +125,7 @@
             "Google Cache": "",
           },
         };
-        return await signService
-          .signUp("Volunteers", volunteersData)
-          .then((res) => this.getId(res));
-      },
-
-      getId(id) {
-        this.$emit("set-id", id);
+        return await signService.signUp("Volunteers", volunteersData);
       },
     },
   };

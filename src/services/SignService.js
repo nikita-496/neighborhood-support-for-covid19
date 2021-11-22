@@ -6,9 +6,7 @@ class SignService {
       data.fields["Primary Skill"] = await this.handlingData("Skills", data, "Primary Skill");
       data.fields["Secondary Skills"] = await this.handlingData("Skills", data, "Secondary Skills");
       data.fields.Equipment = await this.handlingData("Equipment", data, "Equipment");
-      return postJson(API.sign.upVolunteers, data)
-        .then((res) => res.json())
-        .then(async (result) => result.id);
+      return postJson(API.sign.upVolunteers, data);
     }
     return postJson(API.sign.upNeighbors, data);
   }

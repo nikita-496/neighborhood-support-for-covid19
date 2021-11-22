@@ -10,6 +10,11 @@ const routes = [
     component: () => import("../views/landing/index"),
   },
   {
+    path: "/sign/in",
+    name: "sign-in",
+    component: () => import("../components/SignIn"),
+  },
+  {
     path: "/sign/up",
     name: "select-status",
     component: () => import("../components/authorization/SelectStatus"),
@@ -28,7 +33,6 @@ const routes = [
     path: "/volunteers/:id",
     name: "volunteers",
     component: () => import("../components/layouts/VolunteersLayout.vue"),
-    meta: { isInDataBase: false },
   },
 ];
 

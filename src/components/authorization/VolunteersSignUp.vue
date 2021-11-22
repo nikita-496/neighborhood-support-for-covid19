@@ -1,5 +1,5 @@
 <template>
-  <sign-up :volunteersData="userData" @set-id="getId">
+  <sign-up :volunteersData="userData">
     <div slot="volunteers">
       <label class="text-body-1" for="email">Email</label>
       <v-text-field
@@ -66,7 +66,6 @@
     components: { SignUp },
     data: () => ({
       userData: {
-        id: null,
         email: "",
         skillsMore: "",
         primarySkill: "",
@@ -80,21 +79,6 @@
         contacts: [],
       },
     }),
-    beforeRouteLeave(to, from, next) {
-      setTimeout(() => {
-        next();
-      }, 2000);
-    },
-    methods: {
-      getId(id) {
-        /*this.userData.id = id;
-        console.log(this.userData.id);*/
-        setTimeout(() => {
-          this.userData.id = id;
-          console.log(this.userData.id);
-        }, 500);
-      },
-    },
     mounted() {
       function setOptions(options) {
         // parsed from Observer
@@ -104,7 +88,7 @@
           selectListService.getOptions(option).then((result) => (options[option] = result));
         }
       }
-
+      console.log(this.userData.id);
       setOptions(this.options);
     },
   };

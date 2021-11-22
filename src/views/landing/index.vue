@@ -7,8 +7,8 @@
 
         <v-toolbar-title>Система поддержки населения при COVID-19</v-toolbar-title>
         <v-spacer></v-spacer>
-        <router-link class="pr-15">Войти</router-link>
-        <router-link to="/sign/up">Присоедениться</router-link>
+        <router-link class="pr-15" :to="{ name: 'sign-in' }">Войти</router-link>
+        <router-link :to="{ name: 'select-status' }">Присоедениться</router-link>
       </v-app-bar>
 
       <v-navigation-drawer v-model="drawer" absolute temporary>

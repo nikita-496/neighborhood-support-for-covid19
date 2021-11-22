@@ -1,6 +1,6 @@
 <template>
   <sign-up :neigborsData="userData">
-    <div v-for="n in 5" :key="n + 3" slot="neighbors">
+    <div v-for="n in 5" :key="n + 4" slot="neighbors">
       <label class="text-body-1" for="type">{{ `${setValue(n)}` }}</label>
       <v-select
         v-if="n === 1"
