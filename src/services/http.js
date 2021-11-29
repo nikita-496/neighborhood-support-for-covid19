@@ -16,6 +16,7 @@ const api = {
     upNeighbors: getUrl("Neighbors"),
   },
   volunteers: getUrl("Volunteers"),
+  neighbors: getUrl("Neighbors"),
   skills: getUrl("Skills"),
   equipment: getUrl("Equipment"),
   contacts: getUrl("Contacts"),

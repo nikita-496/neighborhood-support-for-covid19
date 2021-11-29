@@ -65,7 +65,7 @@
     name: "sign-up",
     components: { AuthField },
     props: {
-      neigborsData: { type: Object },
+      neigbors: { type: Object },
       volunteersData: { type: Object },
     },
     data: () => ({
@@ -98,11 +98,11 @@
             Name: this.name,
             Address: this.address,
             Phone: this.phone,
-            "Request type": this.neigborsData.typeOfRequest,
-            "Summary request": this.neigborsData.targetOfRequest,
-            "Details request": this.neigborsData.detailsOfRequest,
-            Symptom: this.neigborsData.symptoms,
-            Temperature: this.neigborsData.temperature,
+            "Request type": this.neigbors.requestType,
+            "Summary request": this.neigbors.symmaryRequest,
+            "Details request": this.neigbors.detailsRequest,
+            Symptom: this.neigbors.symptom,
+            Temperature: this.neigbors.temperature,
             Password: this.password,
           },
         };

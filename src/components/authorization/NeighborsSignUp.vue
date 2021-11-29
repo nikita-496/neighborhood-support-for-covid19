@@ -1,44 +1,25 @@
 <template>
-  <sign-up :neigborsData="userData">
-    <div v-for="n in 5" :key="n + 4" slot="neighbors">
-      <label class="text-body-1" for="type">{{ `${setValue(n)}` }}</label>
+  <sign-up :neigbors="users">
+    <div v-for="field in tableFields" :key="field" slot="neighbors">
+      <label class="text-body-1" :for="field">{{ translateField(field) }}</label>
       <v-select
-        v-if="n === 1"
-        v-model="userData.typeOfRequest"
-        name="type"
+        v-if="field === 'Request type'"
+        v-model="users[field]"
         :items="options['event logging']"
+        :name="field"
         dense
         solo
       ></v-select>
       <v-textarea
-        v-else-if="n === 2"
-        v-model="userData.targetOfRequest"
-        name="target"
-        filled
-        auto-grow
-      />
-      <v-textarea
-        v-else-if="n === 3"
-        v-model="userData.detailsOfRequest"
-        name="details"
-        filled
-        auto-grow
-      />
-      <v-textarea
-        v-else-if="n === 4"
-        v-model.number="userData.temperature"
-        name="temperature"
+        v-else-if="field === 'Temperature'"
+        v-model="users[field]"
+        :name="field"
+        @keydown="test"
         height="50"
         filled
         auto-grow
-      />
-      <v-textarea
-        v-else-if="n === 5"
-        v-model="userData.symptoms"
-        name="symptoms"
-        filled
-        auto-grow
-      />
+      ></v-textarea>
+      <v-textarea v-else v-model="users[field]" :name="field" filled auto-grow></v-textarea>
     </div>
     <v-btn
       slot="neighbors-submit"
@@ -51,6 +32,7 @@
 </template>
 
 <script>
+  import { getAllJson, API } from "../../services/http";
   import selectListService from "../../services/SelectListService";
   import SignUp from "../SignUp.vue";
 
@@ -58,50 +40,52 @@
     name: "neighbors-sign-up",
     components: { SignUp },
     data: () => ({
-      userData: {
+      users: {
         id: null,
-        typeOfRequest: "",
-        targetOfRequest: "",
-        detailsOfRequest: "",
-        temperature: null,
-        symptoms: "",
+        "Request type": "",
+        "Summary request": "",
+        "Details request": "",
+        Temperature: null,
+        Symptom: "",
       },
       options: {
         "event logging": [],
       },
+      tableFields: [],
     }),
     methods: {
-      setValue(n, attr) {
-        switch (attr) {
-          case "for":
-            return n === 1 ? "your_name" : n === 2 ? "address" : "phone";
-          case "label":
-            return n === 1
-              ? "введите Ваше имя"
-              : n === 2
-              ? "введите Ваш адресс"
-              : "введите Ваш номер телефона";
-          default:
-            return n === 1
-              ? "Тип пожелания"
-              : n === 2
-              ? "Цель пожелания"
-              : n === 3
-              ? "Детали пожелания"
-              : n === 4
-              ? "Температура"
-              : "Симптомы";
+      translateField(filed) {
+        switch (filed) {
+          case "Request type":
+            return "Тип пожелания";
+          case "Summary request":
+            return "Цель пожелания";
+          case "Details request":
+            return "Детлаи пожелания";
+          case "Temperature":
+            return "Тепература";
+          case "Symptom":
+            return "Симптомы";
         }
       },
     },
-    mounted() {
+    created() {
       function setOptions(options) {
         // parsed from Observer
-        let parsedOptions = JSON.parse(JSON.stringify(options));
+        const parsedOptions = JSON.parse(JSON.stringify(options));
         selectListService
           .getOptions(Object.keys(parsedOptions).join(""))
           .then((result) => (options["event logging"] = result));
       }
+      const getTableFields = async (getData) => {
+        await getData(API.neighbors)
+          .then((res) => res.json())
+          .then((result) => (this.tableFields = Object.keys(result.records[18].fields)));
+        this.tableFields = this.tableFields.filter((data) =>
+          Object.keys(this.users).includes(data)
+        );
+      };
+      getTableFields(getAllJson);
       setOptions(this.options);
     },
   };
