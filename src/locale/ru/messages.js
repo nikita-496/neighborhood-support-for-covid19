@@ -8,5 +8,9 @@ export default {
     "Details request": "Описание запроса",
     Temperature: "Температура",
     Symptom: "Симптомы",
+    "🤒Symptom Log": "🤒Журнал симптомов",
+    "🙏🏽Help Requested": "🙏🏽Запросить помощь",
+    "❓Other": "❓Другое",
+    "🤒Symptom Log,🙏🏽Help Requested,❓Other": "🤒Журнал симптомов, 🙏🏽Запросить помощь, ❓Другое",
   },
 };

@@ -5,7 +5,11 @@
     </template>
     <template v-slot:fields>
       <text-field :labelValue="$t(tableFields.Name)"></text-field>
-      <v-select :items="ui" :label="$t(tableFields['Request type'])" solo></v-select>
+      <v-select
+        :items="$t(options).split(',')"
+        :label="$t(tableFields['Request type'])"
+        solo
+      ></v-select>
       <text-field
         :labelValue="`${$t(tableFields.Phone)} или ${$t(tableFields.Address)}`"
       ></text-field>
@@ -21,7 +25,8 @@
 </template>
 
 <script>
-  import { getAllJson, API } from "../../services/http";
+  import dataTableLogService from "../../services/DataTableLogService";
+
   import SignUp from "../SignUp.vue";
   import TextField from "../input/TextField.vue";
   import RegistForm from "../forms/RegistForm.vue";
@@ -40,48 +45,18 @@
         Temperature: null,
         Symptom: "",
       },
-      options: {
-        "event logging": [],
-      },
+      options: "",
       tableFields: {},
     }),
     created() {
-      const dataTable = getDataTable();
-      getTableFields(dataTable).then((fields) => (this.tableFields = fields));
-
-      function getDataTable() {
-        return getAllJson(API.table.neighbors).then((result) => result);
-      }
-
-      async function getTableFields(table) {
-        let tableRecords = await table.then((res) => res);
-        //think over a case when there is no data in the table
-        //and also how to get the fields differently
-        let fields = tableRecords.records.map((record) => {
-          return Object.keys(record.fields);
-        });
-        let numberOfFields = fields.map((field) => field.length);
-        let sortedFields = implementSorting(numberOfFields);
-        let filteredFields = fields.filter(
-          (item) => item.length === sortedFields[[sortedFields.length - 1]]
-        )[0];
-        return convertToObject(filteredFields);
-      }
-
-      function implementSorting(sortable) {
-        return sortable.sort(function compare(a, b) {
-          if (a < b) return -1;
-          if (a > b) return 1;
-          return 0;
-        });
-      }
-
-      function convertToObject(arr) {
-        return arr.reduce((newObj, item) => {
-          newObj[item] = item;
-          return newObj;
-        }, {});
-      }
+      const dataTabNeighborsleLog = dataTableLogService.getLogFrom("neighbors");
+      dataTableLogService
+        .getTableFields(dataTabNeighborsleLog)
+        .then((fields) => (this.tableFields = fields));
+      const dataTableEventLoggingLog = dataTableLogService.getLogFrom("event logging");
+      dataTableLogService
+        .getOptions(dataTableEventLoggingLog)
+        .then((options) => (this.options = options.join(",")));
     },
   };
 </script>
