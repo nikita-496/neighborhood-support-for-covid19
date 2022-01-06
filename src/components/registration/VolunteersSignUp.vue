@@ -65,7 +65,8 @@
     name: "volunteers-sign-up",
     components: { SignUp },
     data: () => ({
-      userData: {
+      ui: ["Имя", "Адресс", "Еmail", "Телефон"],
+      userInfo: {
         email: "",
         skillsMore: "",
         primarySkill: "",

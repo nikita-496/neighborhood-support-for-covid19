@@ -59,13 +59,13 @@
 
 <script>
   import signService from "../services/SignService";
-  import AuthField from "./input/AuthField.vue";
+  import AuthField from "./forms/RegistForm.vue";
 
   export default {
     name: "sign-up",
     components: { AuthField },
     props: {
-      neigbors: { type: Object },
+      neighbors: { type: Object },
       volunteersData: { type: Object },
     },
     data: () => ({

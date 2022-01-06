@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import AuthField from "./input/AuthField.vue";
+  import AuthField from "./forms/RegistForm.vue";
   export default {
     components: {
       AuthField,

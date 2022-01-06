@@ -17,17 +17,17 @@ const routes = [
   {
     path: "/sign/up",
     name: "select-status",
-    component: () => import("../components/authorization/SelectStatus"),
+    component: () => import("../components/registration/SelectStatus"),
   },
   {
     path: "/sign/up/neighbors",
     name: "neighbors-sign-up",
-    component: () => import("../components/authorization/NeighborsSignUp"),
+    component: () => import("../components/registration/NeighborsSignUp"),
   },
   {
     path: "/sign/up/volunteers",
     name: "volunteers-sign-up",
-    component: () => import("../components/authorization/VolunteersSignUp"),
+    component: () => import("../components/registration/VolunteersSignUp"),
   },
   {
     path: "/volunteers/:id",
