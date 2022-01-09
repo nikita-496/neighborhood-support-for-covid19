@@ -2,7 +2,6 @@ import { API, getAllJson } from "./http";
 
 class DataTableLogService {
   getLogFrom(dataTable) {
-    getAllJson(API.table[dataTable]).then((log) => console.log(log));
     return getAllJson(API.table[dataTable]).then((log) => log);
   }
   async getTableFields(table) {
@@ -13,20 +12,20 @@ class DataTableLogService {
       return Object.keys(record.fields);
     });
     let numberOfFields = fields.map((field) => field.length);
-    let sortedFields = this.implementSorting(numberOfFields);
+    let sortedFields = DataTableLogService.implementSorting(numberOfFields);
     let filteredFields = fields.filter(
       (item) => item.length === sortedFields[[sortedFields.length - 1]]
     )[0];
-    return this.convertToObject(filteredFields);
+    return DataTableLogService.convertToObject(filteredFields);
   }
-  implementSorting(sortable) {
+  static implementSorting(sortable) {
     return sortable.sort(function compare(a, b) {
       if (a < b) return -1;
       if (a > b) return 1;
       return 0;
     });
   }
-  convertToObject(arr) {
+  static convertToObject(arr) {
     return arr.reduce((newObj, item) => {
       newObj[item] = item;
       return newObj;
@@ -42,6 +41,5 @@ class DataTableLogService {
       return options.indexOf(item) == pos;
     });
   }
-  //.map((item) => `${$t(item)}`);
 }
 export default new DataTableLogService();
