@@ -1,25 +1,35 @@
 <template>
-  <regist-form>
+  <regist-form :neighborsSubmitting="userInfo">
     <template v-slot:title>
       <h2>Регистрация изолированного</h2>
     </template>
-    <template v-slot:fields>
-      <text-field :labelValue="$t(tableFields.Name)"></text-field>
+
+    <template v-slot="{ forSubmitting }">
+      <v-text-field
+        v-model="forSubmitting.Name"
+        :label="`${$t(tableFields.Name)}`"
+        solo
+      ></v-text-field>
       <v-select
+        v-model="forSubmitting['Request type']"
         :items="$t(options).split(',')"
         :label="$t(tableFields['Request type'])"
         solo
       ></v-select>
-      <text-field
-        :labelValue="`${$t(tableFields.Phone)} или ${$t(tableFields.Address)}`"
-      ></text-field>
-      <text-field :labelValue="$t(tableFields['Summary request'])"></text-field>
-      <text-field :labelValue="$t(tableFields['Details request'])"></text-field>
-      <text-field :labelValue="$t(tableFields.Temperature)"></text-field>
-      <text-field :labelValue="$t(tableFields.Symptom)"></text-field>
-    </template>
-    <template v-slot:actions>
-      <v-btn>Зарегистрироваться</v-btn>
+      <v-text-field
+        v-for="item in Object.keys(userInfo).slice(2, 7)"
+        :key="item"
+        v-model="forSubmitting[item]"
+        :label="`${$t(tableFields[item])}`"
+        solo
+      >
+      </v-text-field>
+      <v-text-field
+        v-model.number="forSubmitting.Temperature"
+        :label="`${$t(tableFields.Temperature)}`"
+        solo
+      >
+      </v-text-field>
     </template>
   </regist-form>
 </template>
@@ -28,27 +38,26 @@
   import dataTableLogService from "../../services/DataTableLogService";
 
   import SignUp from "../SignUp.vue";
-  import TextField from "../input/TextField.vue";
   import RegistForm from "../forms/RegistForm.vue";
 
   export default {
     name: "neighbors-sign-up",
-    components: { SignUp, RegistForm, TextField },
-
+    components: { SignUp, RegistForm },
     data: () => ({
-      ui: ["Имя", "Адресс", "Еmail", "Телефон"],
       userInfo: {
-        id: null,
+        Name: "",
         "Request type": "",
+        Address: "",
+        Phone: "",
         "Summary request": "",
         "Details request": "",
-        Temperature: null,
         Symptom: "",
+        Temperature: null,
       },
       options: "",
       tableFields: {},
     }),
-    created() {
+    mounted() {
       const dataTabNeighborsleLog = dataTableLogService.getLogFrom("neighbors");
       dataTableLogService
         .getTableFields(dataTabNeighborsleLog)

@@ -2,13 +2,7 @@ import { API, postJson, getAllJson } from "./http";
 
 class SignService {
   async signUp(table, data) {
-    if (table === "Volunteers") {
-      data.fields["Primary Skill"] = await this.handlingData("Skills", data, "Primary Skill");
-      data.fields["Secondary Skills"] = await this.handlingData("Skills", data, "Secondary Skills");
-      data.fields.Equipment = await this.handlingData("Equipment", data, "Equipment");
-      return postJson(API.sign.upVolunteers, data);
-    }
-    return postJson(API.sign.upNeighbors, data);
+    return postJson(API.sign[table], data);
   }
 
   // Setting data for table "Volunteers" in terms of related table fields in base

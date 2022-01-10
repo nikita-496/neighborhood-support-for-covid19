@@ -12,8 +12,8 @@ const getUrl = (currentTable) => `${baseUrl}${airTableBase}/${currentTable}`;
 
 const api = {
   sign: {
-    upVolunteers: getUrl("Volunteers"),
-    upNeighbors: getUrl("Neighbors"),
+    volunteers: getUrl("Volunteers"),
+    neighbors: getUrl("Neighbors"),
   },
   table: {
     volunteers: getUrl("Volunteers"),
