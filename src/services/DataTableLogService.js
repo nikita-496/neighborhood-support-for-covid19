@@ -1,8 +1,8 @@
 import { API, getAllJson } from "./http";
 
 class DataTableLogService {
-  getLogFrom(dataTable) {
-    return getAllJson(API.table[dataTable]).then((log) => log);
+  getLogFrom(name) {
+    return getAllJson(API.table[name]).then((log) => log);
   }
   async getTableFields(table) {
     let tableRecords = await table.then((res) => res);
@@ -31,11 +31,15 @@ class DataTableLogService {
       return newObj;
     }, {});
   }
-  async getOptions(log) {
-    let tableRecords = await log.then((res) => res);
+  async getOptions(field) {
+    console.log(field);
+    let tableRecords = await field.then((res) => res);
     let options = [];
     for (let item of tableRecords.records) {
-      options.push(item.fields["Request Type"]);
+      if (item.fields["Request Type"]) options.push(item.fields["Request Type"]);
+      if (item.fields.Profession) options.push(item.fields.Profession);
+      if (item.fields.Name) options.push(item.fields.Name);
+      if (item.fields["Contact form"]) options.push(item.fields["Contact form"]);
     }
     return options.filter(function (item, pos) {
       return options.indexOf(item) == pos;

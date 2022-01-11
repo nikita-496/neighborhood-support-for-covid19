@@ -20,14 +20,14 @@ const routes = [
     component: () => import("../components/registration/SelectStatus"),
   },
   {
-    path: "/sign/up/neighbors",
+    path: "/sign/up/:userType",
     name: "neighbors-sign-up",
-    component: () => import("../components/registration/NeighborsSignUp"),
+    component: () => import("../components/SignUpConstructor"),
   },
   {
-    path: "/sign/up/volunteers",
+    path: "/sign/up/:userType",
     name: "volunteers-sign-up",
-    component: () => import("../components/registration/VolunteersSignUp"),
+    component: () => import("../components/SignUpConstructor"),
   },
   {
     path: "/volunteers/:id",
