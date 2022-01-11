@@ -9,7 +9,7 @@
             </v-card-title>
             <v-card-text>
               <slot
-                :forSubmitting="neighborsSubmitting ? neighborsSubmitting : volunteersForSubmitting"
+                :forSubmitting="neighborsSubmitting ? neighborsSubmitting : volunteersSubmitting"
               >
               </slot>
             </v-card-text>

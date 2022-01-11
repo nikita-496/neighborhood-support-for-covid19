@@ -22,12 +22,12 @@ const routes = [
   {
     path: "/sign/up/:userType",
     name: "neighbors-sign-up",
-    component: () => import("../components/SignUpConstructor"),
+    component: () => import("../components/SignUpWrapper"),
   },
   {
     path: "/sign/up/:userType",
     name: "volunteers-sign-up",
-    component: () => import("../components/SignUpConstructor"),
+    component: () => import("../components/SignUpWrapper"),
   },
   {
     path: "/volunteers/:id",

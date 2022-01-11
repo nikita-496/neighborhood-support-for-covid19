@@ -7,26 +7,26 @@
     <template v-slot="{ forSubmitting }">
       <v-text-field
         v-model="forSubmitting.Name"
-        :label="`${$t(tableFields.Name)}`"
+        :label="`${$t(Object.keys(userInfo)[0])}`"
         solo
       ></v-text-field>
       <v-select
         v-model="forSubmitting['Request type']"
         :items="$t(options).split(',')"
-        :label="$t(tableFields['Request type'])"
+        :label="`${$t(Object.keys(userInfo)[1])}`"
         solo
       ></v-select>
       <v-text-field
         v-for="item in Object.keys(userInfo).slice(2, 7)"
         :key="item"
         v-model="forSubmitting[item]"
-        :label="`${$t(tableFields[item])}`"
+        :label="$t(item)"
         solo
       >
       </v-text-field>
       <v-text-field
         v-model.number="forSubmitting.Temperature"
-        :label="`${$t(tableFields.Temperature)}`"
+        :label="`${$t(Object.keys(userInfo)[Object.keys(userInfo).length - 1])}`"
         solo
       >
       </v-text-field>
@@ -35,14 +35,14 @@
 </template>
 
 <script>
-  import dataTableLogService from "../../services/DataTableLogService";
-
-  import SignUp from "../SignUp.vue";
   import RegistForm from "../forms/RegistForm.vue";
 
   export default {
     name: "neighbors-sign-up",
-    components: { SignUp, RegistForm },
+    components: { RegistForm },
+    props: {
+      options: { type: String, require: true },
+    },
     data: () => ({
       userInfo: {
         Name: "",
@@ -54,18 +54,6 @@
         Symptom: "",
         Temperature: null,
       },
-      options: "",
-      tableFields: {},
     }),
-    mounted() {
-      const dataTabNeighborsleLog = dataTableLogService.getLogFrom("neighbors");
-      dataTableLogService
-        .getTableFields(dataTabNeighborsleLog)
-        .then((fields) => (this.tableFields = fields));
-      const dataTableEventLoggingLog = dataTableLogService.getLogFrom("event logging");
-      dataTableLogService
-        .getOptions(dataTableEventLoggingLog)
-        .then((options) => (this.options = options.join(",")));
-    },
   };
 </script>

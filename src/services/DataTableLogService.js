@@ -32,13 +32,12 @@ class DataTableLogService {
     }, {});
   }
   async getOptions(field) {
-    console.log(field);
     let tableRecords = await field.then((res) => res);
     let options = [];
     for (let item of tableRecords.records) {
       if (item.fields["Request Type"]) options.push(item.fields["Request Type"]);
       if (item.fields.Profession) options.push(item.fields.Profession);
-      if (item.fields.Name) options.push(item.fields.Name);
+      if (item.fields.Attachments) options.push(item.fields.Name);
       if (item.fields["Contact form"]) options.push(item.fields["Contact form"]);
     }
     return options.filter(function (item, pos) {

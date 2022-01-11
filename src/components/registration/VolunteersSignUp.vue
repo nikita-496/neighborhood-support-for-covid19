@@ -1,96 +1,73 @@
 <template>
-  <sign-up :volunteersData="userData">
-    <div slot="volunteers">
-      <label class="text-body-1" for="email">Email</label>
+  <regist-form :volunteersSubmitting="userInfo">
+    <template v-slot:title>
+      <h2>Регистрация волонтера</h2>
+    </template>
+    <template v-slot="{ forSubmitting }">
       <v-text-field
-        v-model="userData.email"
-        placeholder="введите Ваш Email"
-        name="email"
+        v-for="item in Object.keys(userInfo).slice(0, 4)"
+        :key="item"
+        v-model="forSubmitting[item]"
+        :label="item === 'Email' ? item : `${$t(item)}`"
         solo
-        clearable
       >
       </v-text-field>
-      <label class="text-body-1" for="primary skills">Основной навык</label>
       <v-select
-        name="primary skill"
-        v-model="userData.primarySkill"
-        :items="options.skills"
-        dense
+        v-for="item in Object.keys(userInfo).slice(4, 6)"
+        :key="item"
+        v-model="forSubmitting[item]"
+        :items="$t(options.skills).split(',')"
+        :label="$t(item)"
         solo
       >
       </v-select>
-      <label class="text-body-1" for="secondary skill">Второстепененный навык</label>
+      <v-text-field
+        v-model="forSubmitting['Skills more']"
+        :label="`${$t(Object.keys(userInfo)[6])}`"
+        solo
+      >
+      </v-text-field>
       <v-select
-        name="secondary skills"
-        v-model="userData.secondarySkills"
-        :items="options.skills"
-        dense
+        v-model="forSubmitting.Equipment"
+        :items="$t(options.equipment).split(',')"
+        :label="`${$t(Object.keys(userInfo)[7])}`"
         solo
       >
       </v-select>
-      <label class="text-body-1" for="skillsMore">Дополнительные навыки</label>
-      <v-textarea v-model="userData.skillsMore" name="skillsMore" filled auto-grow> </v-textarea>
-      <label class="text-body-1" for="equipment">Ресурсы</label>
-      <v-select name="equipment" v-model="userData.equipment" :items="options.equipment" dense solo>
-      </v-select>
-      <label class="text-body-1" for="prefered">Предпочтительный способ связи</label>
       <v-checkbox
-        v-for="contact in options.contacts"
-        :key="contact"
-        v-model="userData.prefered"
+        v-for="contact in options.contacts.split(',')"
+        :key="`${contact} 1`"
+        v-model="forSubmitting['Prefered Contact Method']"
         name="prefered"
         color="green"
         :value="contact"
         :label="contact"
         hide-details
       />
-    </div>
-    <v-btn
-      slot="volunteers-submit"
-      slot-scope="{ volunteersSubmit }"
-      @click="volunteersSubmit"
-      color="primary"
-      :to="`/volunteers/${userData.id}`"
-    >
-      Зарегистрироваться</v-btn
-    >
-  </sign-up>
+    </template>
+  </regist-form>
 </template>
-
 <script>
-  import selectListService from "../../services/SelectListService";
-  import SignUp from "../SignUp.vue";
+  import RegistForm from "../forms/RegistForm.vue";
 
   export default {
     name: "volunteers-sign-up",
-    components: { SignUp },
+    components: { RegistForm },
+    props: {
+      options: { type: Object, require: true },
+    },
     data: () => ({
-      ui: ["Имя", "Адресс", "Еmail", "Телефон"],
       userInfo: {
-        email: "",
-        skillsMore: "",
-        primarySkill: "",
-        secondarySkills: "",
-        equipment: "",
-        prefered: "",
-      },
-      options: {
-        skills: [],
-        equipment: [],
-        contacts: [],
+        Name: "",
+        Address: "",
+        Phone: "",
+        Email: "",
+        "Primary skill": "",
+        "Secondary skills": "",
+        "Skills more": "",
+        Equipment: "",
+        "Prefered Contact Method": "",
       },
     }),
-    mounted() {
-      function setOptions(options) {
-        // parsed from Observer
-        let parsedOptions = JSON.parse(JSON.stringify(options));
-
-        for (let option in parsedOptions) {
-          selectListService.getOptions(option).then((result) => (options[option] = result));
-        }
-      }
-      console.log(this.userData.id);
-      setOptions(this.options);
-    },
   };
 </script>
