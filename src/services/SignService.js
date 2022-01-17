@@ -1,32 +1,40 @@
 import { API, postJson, getAllJson } from "./http";
+import translation from "../utils/translation";
 
 class SignService {
   async signUp(table, data) {
+    if (table === "volunteers") {
+      data.fields["Primary Skill"] = await SignService.handlingData(
+        "skills",
+        data,
+        "Primary Skill"
+      );
+      data.fields["Secondary Skills"] = await SignService.handlingData(
+        "skills",
+        data,
+        "Secondary Skills"
+      );
+      data.fields.Equipment = await SignService.handlingData("equipment", data, "Equipment");
+      return postJson(API.sign[table], data);
+    }
     return postJson(API.sign[table], data);
   }
 
   // Setting data for table "Volunteers" in terms of related table fields in base
-  async handlingData(field, data, type) {
-    if (field === "Skills") {
-      return getAllJson(API.skills)
-        .then((res) => res.json())
-        .then(async (result) => {
-          return await this.searchId(result.records, data, type);
-        });
-    } else {
-      return getAllJson(API.equipment)
-        .then((res) => res.json())
-        .then(async (result) => await this.searchId(result.records, data, type));
-    }
+  static async handlingData(field, data, type) {
+    //to match options and get an ID, selector values ​​must be in the same language
+    const selectOption = translation.translate(data.fields[type]);
+    return getAllJson(API.table[field]).then(
+      async (result) => await this.searchId(result.records, selectOption, type)
+    );
   }
-
-  searchId(options, data, type) {
-    let selectedOptions = options.filter((option) => {
+  static searchId(options, selectOption, type) {
+    let selectedOption = options.filter((option) => {
       return type === "Equipment"
-        ? option.fields.Name === data.fields[type]
-        : option.fields.Profession === data.fields[type];
+        ? option.fields.Name === selectOption
+        : option.fields.Profession === selectOption;
     });
-    return selectedOptions.map((option) => option.id);
+    return selectedOption.map((option) => option.id);
   }
 }
 export default new SignService();

@@ -22,7 +22,7 @@
       >
       </v-select>
       <v-text-field
-        v-model="forSubmitting['Skills more']"
+        v-model="forSubmitting['Skills More']"
         :label="`${$t(Object.keys(userInfo)[6])}`"
         solo
       >
@@ -62,9 +62,9 @@
         Address: "",
         Phone: "",
         Email: "",
-        "Primary skill": "",
-        "Secondary skills": "",
-        "Skills more": "",
+        "Primary Skill": "",
+        "Secondary Skills": "",
+        "Skills More": "",
         Equipment: "",
         "Prefered Contact Method": "",
       },
