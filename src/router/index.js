@@ -30,9 +30,9 @@ const routes = [
     component: () => import("../components/SignUpWrapper"),
   },
   {
-    path: "/volunteers/:id",
-    name: "volunteers",
-    component: () => import("../components/layouts/VolunteersLayout.vue"),
+    path: "/profile/:id",
+    name: "profile",
+    component: () => import("../views/profile/Profile"),
   },
 ];
 
