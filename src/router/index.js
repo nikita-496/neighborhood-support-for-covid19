@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "index",
-    component: () => import("../views/landing/index"),
+    component: () => import("../views/landing/Index"),
   },
   {
     path: "/sign/in",
