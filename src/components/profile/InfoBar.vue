@@ -82,10 +82,12 @@
     methods: {
       change() {
         this.$store.commit("changeEditMode");
-        console.log(this.$store.state.editMode);
       },
       changeSelectState() {
         this.openSelect = !this.openSelect;
+        if (this.$store.state.editMode) {
+          this.$store.commit("changeEditMode");
+        }
       },
       changeText(event) {
         this.biography = event;
