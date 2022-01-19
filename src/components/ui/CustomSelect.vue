@@ -9,15 +9,10 @@
 
 <script>
   export default {
-    data: () => {
-      return {
-        editeMode: false,
-      };
-    },
     methods: {
       changeEditeMode() {
-        this.editeMode = !this.editeMode;
-        this.$emit("editeText", this.editeMode);
+        this.$store.commit("changeEditMode");
+        console.log(this.$store.state.editMode);
       },
     },
   };

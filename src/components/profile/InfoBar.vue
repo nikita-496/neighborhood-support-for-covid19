@@ -1,17 +1,12 @@
 <template>
   <aside class="aside">
     <v-card class="card rounded-sm pa-4" color="grey lighten-3" flat>
-      <custom-select v-if="openSelect" @editeText="changeEditeMode" />
+      <custom-select v-if="openSelect" />
       <v-card-title class="card-title d-flex justify-space-between">
         <h3 class="text-title title">Биография</h3>
         <v-icon class="icon-title__item" @click="changeSelectState"> fas fa-ellipsis-h</v-icon>
       </v-card-title>
-      <custom-text-area
-        v-if="editeMode"
-        @saveText="() => (this.biography = $event)"
-        @closeTextArea="close"
-        @cancelChanges="() => (this.editeMode = false)"
-      />
+      <custom-text-area v-if="this.$store.state.editMode" @saveText="changeText" />
       <p v-else class="card__biography-content-text">{{ biography }}</p>
       <v-card-actions class="card__more">
         <custom-button>
@@ -80,31 +75,20 @@
     data: () => {
       return {
         openSelect: false,
-        editeMode: false,
         biography: "",
       };
     },
-    /*data: function () {
-      return {
-        editeMode: false,
-      };
-    },*/
+
     methods: {
+      change() {
+        this.$store.commit("changeEditMode");
+        console.log(this.$store.state.editMode);
+      },
       changeSelectState() {
         this.openSelect = !this.openSelect;
-        if (this.editeMode) {
-          this.editeMode = false;
-        }
       },
-      changeEditeMode(event) {
-        this.editeMode = event;
-      },
-      /*changeText(event) {
+      changeText(event) {
         this.biography = event;
-      },*/
-      close(event) {
-        this.openSelect = event;
-        this.editeMode = event;
       },
     },
   };

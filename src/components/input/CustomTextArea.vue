@@ -17,10 +17,10 @@
     methods: {
       save() {
         this.$emit("saveText", this.content);
-        this.$emit("closeTextArea", false);
+        this.$store.commit("changeEditMode");
       },
       cancel() {
-        this.$emit("cancelChanges");
+        this.$store.commit("changeEditMode");
       },
     },
   };
