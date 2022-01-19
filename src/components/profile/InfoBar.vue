@@ -98,9 +98,12 @@
 
 <style scoped lang="sass">
   @import "../../styles/_variables.sass"
-  @import "../../styles/_mixins.sass"
+  @import "../../styles/_mixins/actions.sass"
+  @import "../../styles/_mixins/media.sass"
   .card
     .card-title
+      .text-title
+        font-size: 1.2rem
       .icon-title__item
         font-size: $icon-size
         cursor: pointer
@@ -108,14 +111,16 @@
     .card__more
       .v-btn__content
         .card__link-text
+          font-size: .8rem
           text-transform: lowercase
           color: $primary-link
+          @include responsLink()
         .card__link-item
           font-size: $icon-size
     .card__contacts-content
      .card__contact-items
       .card__contact-icon
-        font-size: 18px
+        font-size: 1.2em
     .card__opportunities-content
       .card__opportunities-secondary
         background-color: rgb(137,207,240)

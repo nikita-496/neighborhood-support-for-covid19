@@ -1,0 +1,29 @@
+@import "../_variables"
+
+@mixin responsiveRootFS ()
+  @media screen and (max-width: $md)
+    font-size: calc(0.2em + 1vw)
+  @media screen and (max-width: $sm)
+    font-size: calc(0.2em + 1vw)
+  @media screen and (max-width: $xs)
+    font-size: calc(0.45em + 1vw)
+
+@mixin responsiveWrapper() 
+  @media screen and (max-width: 1300px)  
+    max-width: 1200px
+  @media screen and (max-width: $md)
+    max-width: 1100px
+  @media screen and (max-width: 1120px)
+    max-width: 920px
+  @media screen and (max-width: $sm)
+    max-width: 790px
+  @media screen and (max-width: 810px)
+    max-width: 700px
+    @media screen and (max-width: 715px)
+    max-width: 650px
+
+@mixin responsLink()
+  @media screen and (max-width: $md)
+    font-size: 1rem
+  @media screen and (max-width: $xs)
+    font-size: 1rem
